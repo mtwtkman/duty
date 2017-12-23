@@ -4,10 +4,31 @@
 メンバー一覧
 {% endblock %}
 
+{% block extra_style %}
+<style>
+  .members > div:hover {
+    background: #f3f3f3;
+  }
+  .members > div {
+    display: flex;
+    margin: 3px 0;
+  }
+  .members > div > div.name {
+    flex-grow: 1;
+    align-self: center;
+  }
+  .members > div > div.delete > button:hover {
+    cursor: pointer;
+  }
+  .members > div > div.delete > button {
+    padding: 3px 6px;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="col self-align-center">
-    <h1>メンバー一覧</h1>
     <div id="app"></div>
   </div>
 </div>
@@ -15,7 +36,7 @@
 
 {% block extra_js %}
 <script>
-  const endpoint = 'api/members'
+  const endpoint = "{% url 'members:api-members' %}"
   const Model = {
     data: [],
     fetch() {
@@ -31,6 +52,12 @@
         data,
       });
     },
+    delete(id) {
+      return m.request({url: `${endpoint}/${id}`, method: 'DELETE'});
+    },
+    remove(id) {
+      Model.data = Model.data.filter(x => x.id !== id);
+    },
   };
 
   const state = {
@@ -40,7 +67,7 @@
     model: Model,
     updateValue(v) {
       state.value = v;
-    }
+    },
   }
 
   const Component = {
@@ -83,9 +110,28 @@
             }, 'Add'),
           ),
         ),
-        m('div.members', Model.data.map(x => {
-          return m(`div#${x.id}`, m('span', x.name));
-        })),
+        m('div.members', Model.data.map(x => m(`div#${x.id}`,
+            m('div.name', x.name),
+            m('div.delete',
+              m('button.btn.btn-danger[type=button]', {
+                onclick() {
+                  if (confirm('Are you sure?')) {
+                    state.connecting = true;
+                    Model.delete(x.id)
+                      .then(response => {
+                        state.connecting = false;
+                        Model.remove(response.deleted);
+                      })
+                      .catch(e => {
+                        state.connecting = false;
+                        state.errorMessage = e.message;
+                      });
+                  }
+                },
+              }, m('i.fa.fa-trash-o[aria-hidden=true]')),
+            ),
+          )
+        )),
       );
     }
   };

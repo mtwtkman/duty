@@ -8,7 +8,7 @@ import domain.models.members as model
 
 
 class Members(View):
-    http_method_name = ['get', 'post']
+    http_method_names = ['get', 'post']
 
     def get(self, request):
         members = model.Member.objects.all()
@@ -30,3 +30,15 @@ class Members(View):
 
         member.save()
         return JsonResponse(body, status=status)
+
+
+class Member(View):
+    http_method_names = ['delete']
+
+    def delete(self, request, member_id):
+        try:
+            member = model.Member.objects.get(pk=member_id)
+        except model.Member.DoesNotExist:
+            return JsonResponse({'message': 'Failed to delete a member'}, status=400)
+        member.delete()
+        return JsonResponse({'message': 'ok', 'deleted': member_id});

@@ -6,8 +6,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/1.1.6/mithril.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% block extra_style %}
+    {% endblock %}
   </head>
   <body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark flex-column flex-md-row bd-navbar">
+      <a class="nvabar-brand" href="{% url 'members:index' %}">
+        <img
+          src="http://4.bp.blogspot.com/-3td83xe0Fyk/UdEedypOaVI/AAAAAAAAVwM/uHIBlKFUiMw/s450/mama_kai.png"
+          width="30"
+          height="30"
+          class="d-inline-block align-top"
+          alt=""
+        >
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'members:index' %}">Members</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'meeting:index' %}">Meeting</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <p>
     <div class="container">
       {% block content %}{% endblock %}
     </div>
