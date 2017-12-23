@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+メンバー一覧
+{% endblock %}
+
+{% block content %}
+{% load bootstrap4 %}
+<div class="row">
+  <div class="col self-align-center">
+    <h1>メンバー一覧</h1>
+    <div id="app"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const endpoint = 'api/members'
+  const Model = {
+    data: [],
+    fetch() {
+      m.request({url: endpoint, method: 'GET'})
+        .then(response => {
+          Model.data = response.members;
+        });
+    },
+    create(data) {
+      return m.request({
+        url: endpoint,
+        method: 'POST',
+        data,
+      });
+    },
+  };
+
+  const state = {
+    value: '',
+    connecting: false,
+    errorMessage: '',
+    model: Model,
+    updateValue(v) {
+      state.value = v;
+    }
+  }
+
+  const Component = {
+    oninit(vnode) {
+      Model.fetch();
+      vnode.state = Object.assign(state, vnode.state);
+      vnode.send = () => {
+        state.connecting = true;
+        Model.create({name: state.value})
+          .then(resp => {
+            state.connecting = false;
+            state.value = '';
+            Model.data.push(resp.created);
+          }).catch(e => {
+            state.connecting = false;
+            state.errorMessage = e.message;
+          });
+      };
+    },
+    view(vnode) {
+      return m('div',
+        (() => {
+          if (!!state.errorMessage) {
+            return m('div.alert.alert-danger[role=alert]', state.errorMessage);
+          }
+        })(),
+        m('div.input-group',
+          m('input.form-control', {
+            oninput: m.withAttr('value', state.updateValue),
+            placeholder: 'input name',
+            'aria-label': 'input name',
+            value: state.value,
+            maxlength: '20',
+            disabled: state.connecting,
+          }),
+          m('span.input-group-btn',
+            m('button.btn.btn-primary[type=button]', {
+              onclick: vnode.send,
+              disabled: !state.value || state.connecting,
+            }, 'Add'),
+          ),
+        ),
+        m('div.members', Model.data.map(x => {
+          return m(`div#${x.id}`, m('span', x.name));
+        })),
+      );
+    }
+  };
+  m.mount(document.getElementById('app'), Component);
+</script>
+{% endblock %}
