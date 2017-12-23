@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.urls import path, include
 
+from members.views import Index
+
 urlpatterns = [
-    path(r'members/', include('members.urls', namespace='members')),
+    path('members/', include('members.urls', namespace='members')),
     path('meeting/', include('meeting.urls', namespace='meeting')),
 ]

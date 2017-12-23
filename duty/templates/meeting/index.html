@@ -3,10 +3,203 @@
 Meeting
 {% endblock %}
 
+{% block extra_style %}
+<style>
+  .members > div {
+    display: flex;
+  }
+  .member {
+    flex-grow: 1;
+    align-self: center;
+  }
+  .facilitator {
+    text-align: center;
+  }
+  button:hover {
+    cursor: pointer;
+  }
+  .candidates {
+    margin-top: 10px;
+  }
+  .candidates > .alert {
+    margin-bottom: 3px;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row">
-  <div class="col align-self-center">
-    TODO
+  <div class="col self-align-center">
+    <div id="app"></div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const facilitatorEndpoint = "{% url 'meeting:api:facilitator' %}";
+  const membersEndpoint = "{% url 'meeting:api:members' %}";
+
+  const state = {
+    fetching: false,
+    fetchingMembers: false,
+    selecting: false,
+    rotating: false,
+    connecting() {
+      return state.fetching ||
+        state.fetchingMembers ||
+        state.selecting ||
+        state.rotating;
+    },
+  };
+
+  const Model = {
+    facilitator: null,
+    members: [],
+    fetch() {
+      state.fetching = true;
+      return m.request({url: facilitatorEndpoint, method: 'GET'})
+        .then(response => {
+          state.fetching = false;
+          Model.facilitator = response.data;
+        })
+        .catch(e => {
+          state.fetching = false;
+          return e;
+        });
+    },
+    fetchMembers() {
+      state.fetchingMembers = true;
+      m.request({url: membersEndpoint, method: 'GET'})
+        .then(response => {
+          state.fetchingMembers = false;
+          Model.members = response.members;
+        })
+        .catch(e => {
+          state.fetchingMembers = false;
+          return e
+        });
+    },
+    select(member_id) {
+      state.selecting = true;
+      return m.request({url: facilitatorEndpoint, method: 'POST', data: { member_id }})
+        .then(response => {
+          state.selecting = false;
+          Model.facilitator = response.facilitator;
+        })
+        .catch(e => {
+          state.selecting = false;
+          return e;
+        });
+    },
+    ids() {
+      return Model.members.map(x => x.id);
+    },
+    nextId(direction) {
+      const idx = Model.ids().findIndex(x => x === Model.facilitator.id);
+      const nextIndex = (idx + (direction === 1 ? direction : Model.members.length - 1)) % Model.members.length;
+      return Model.members[nextIndex].id;
+    },
+    rotate(next_facilitator_id) {
+      state.rotating = true;
+      return m.request({
+        url: facilitatorEndpoint,
+        method: 'PUT',
+        data: { member_id: next_facilitator_id },
+      })
+        .then(response => {
+          state.rotating = false;
+          Model.facilitator = response.facilitator;
+        })
+        .catch(e => {
+          state.rotating = false;
+          return e;
+        });
+    },
+  };
+  Model.fetch();
+  Model.fetchMembers();
+  const NoFacilitatorComponent = {
+    view(vnode) {
+      if (state.connecting()) return;
+      if (Model.members.length === 0) {
+        return m('div',
+          m('h1', 'ファシリテーターを決めましょう'),
+          m('span', 'おや、メンバーがまだ登録されてないみたいですね。'),
+          m('br'),
+          m('a[href={% url "members:index" %}]', 'ここ'),
+          m('span', 'からメンバーの登録をしましょう')
+        );
+      }
+      return m('div.members', Model.members.map(member => {
+        return m('div.alert.alert-secondary',
+          m('div.member', `${member.order}番目: ${member.name}`),
+          m('button.btn.btn-info', {
+            onclick() {
+              if (confirm(`${member.name}さんでいいですか`)) {
+                Model.select(member.id);
+              }
+            }
+          }, 'Select'),
+        );
+      }));
+    },
+  };
+  const OrdinaryComponent = {
+    view(vnode) {
+      return m('div',
+        m('div.facilitator',
+          m('div', '今日のファシリテーターは'),
+          m('h3', `${Model.facilitator.name}さん`),
+          m('div.btn-group[role=group]',
+            m('button.btn.btn-info[type=button]', {
+              disabled: state.connecting(),
+              onclick() {
+                if (confirm('次の人に回しますよ')) {
+                  Model.rotate(Model.nextId(1));
+                }
+              },
+            }, 'Done!'),
+            m('button.btn.btn-warning[type=button]', {
+              disabled: state.connecting(),
+              onclick() {
+                if (confirm('操作を戻しますよ')) {
+                  Model.rotate(Model.nextId(-1));
+                }
+              },
+            }, 'Redo'),
+          ),
+        ),
+        m('div.candidates', Model.members.map(member => {
+          return m('div.alert.alert-secondary',
+            m('div.member',
+              (() => {
+                if (member.id === Model.facilitator.id) {
+                  return m('i.fa.fa-gavel[aria-hidden=true');
+                }
+              })(),
+              m('span', `${member.order}番目: ${member.name}`),
+            ),
+          );
+        })),
+      );
+    },
+  };
+  const Component = {
+    oninit(vnode) {
+      vnode.state.model = Model;
+    },
+    view(vnode) {
+      return m('div',
+        (() => {
+          if (!Model.facilitator) {
+            return m(NoFacilitatorComponent);
+          }
+          return m(OrdinaryComponent);
+        })(),
+      );
+    }
+  };
+  m.mount(document.getElementById('app'), Component);
+</script>
 {% endblock %}

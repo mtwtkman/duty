@@ -12,11 +12,11 @@
   </head>
   <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark flex-column flex-md-row bd-navbar">
-      <a class="nvabar-brand" href="{% url 'members:index' %}">
+      <a class="nvabar-brand" href="{% url 'members:index' %}" style="margin-right:15px;">
         <img
           src="http://4.bp.blogspot.com/-3td83xe0Fyk/UdEedypOaVI/AAAAAAAAVwM/uHIBlKFUiMw/s450/mama_kai.png"
-          width="30"
-          height="30"
+          width="50"
+          height="50"
           class="d-inline-block align-top"
           alt=""
         >
@@ -26,11 +26,17 @@
           {% load tags %}
           {% active_link 'members' as members_active %}
           <li class="nav-item {{ members_active }}">
-            <a class="nav-link" href="{% url 'members:index' %}">Members</a>
+            <a class="nav-link" href="{% url 'members:index' %}">
+              <i class="fa fa-users" aria-hidden="true"></i>
+              Members
+            </a>
           </li>
           {% active_link 'meeting' as meeting_active %}
           <li class="nav-item {{ meeting_active }}">
-            <a class="nav-link" href="{% url 'meeting:index' %}">Meeting</a>
+            <a class="nav-link" href="{% url 'meeting:index' %}">
+              <i class="fa fa-comments-o" aria-hidden="true"></i>
+              Meeting
+            </a>
           </li>
         </ul>
       </div>
