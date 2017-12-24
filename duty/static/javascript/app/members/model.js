@@ -10,7 +10,7 @@ const model = {
     async fetch() {
         try {
             const response = await m.request({url: endpoint, method: 'GET'});
-            model.data = response.members;
+            model.data = response.data;
             return response;
         } catch(e) {
             throw e;
@@ -23,7 +23,7 @@ const model = {
                 method: 'POST',
                 data: { name: model.value },
             });
-            model.data.push(response.created);
+            model.data.push(response.data);
             return response;
         } catch(e) {
             throw e;
@@ -32,7 +32,7 @@ const model = {
     async delete(id) {
         try {
             const response = await m.request({url: `${endpoint}/${id}`, method: 'DELETE'});
-            model.data = model.data.filter(x => x.id !== response.deleted);
+            model.data = model.data.filter(x => x.id !== response.data);
             return response;
         } catch(e) {
             throw e;

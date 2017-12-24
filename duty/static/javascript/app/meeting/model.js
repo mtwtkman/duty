@@ -18,7 +18,7 @@ const model = {
     async fetchMembers() {
         try {
             const response = await m.request({url: membersEndpoint, method: 'GET'});
-            model.members = response.members;
+            model.members = response.data;
             return response;
         } catch(e) {
             throw e;
@@ -27,7 +27,7 @@ const model = {
     async select(member_id) {
         try {
             const response = await m.request({url: facilitatorEndpoint, method: 'POST', data: { member_id }})
-            model.facilitator = response.facilitator;
+            model.facilitator = response.data;
             return response;
         } catch(e) {
             throw e;
@@ -45,7 +45,7 @@ const model = {
         try {
             const response = await m.request({
                 url: facilitatorEndpoint,
-                method: 'PUT',
+                method: 'POST',
                 data: {
                   member_id: nextFacilitatorId,
                 }

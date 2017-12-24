@@ -13,7 +13,7 @@ class Members(View):
 
     def get(self, request):
         members = model.Member.roles.all()
-        return JsonResponse({'members': [x.as_dict() for x in members]})
+        return JsonResponse({'data': [x.as_dict() for x in members]})
 
     @transaction.atomic
     def post(self, request):
@@ -27,7 +27,7 @@ class Members(View):
             status = 200
             body = {
                 'message': 'ok',
-                'created': member.as_dict(),
+                'data': member.as_dict(),
             }
 
         member.save_with_facilitate_order()
@@ -44,4 +44,4 @@ class Member(View):
         except model.Member.DoesNotExist:
             return JsonResponse({'message': 'Failed to delete a member'}, status=400)
         member.delete()
-        return JsonResponse({'message': 'ok', 'deleted': member_id});
+        return JsonResponse({'message': 'ok', 'data': member_id});
