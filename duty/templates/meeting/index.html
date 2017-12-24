@@ -131,18 +131,21 @@ Meeting
           m('span', 'からメンバーの登録をしましょう')
         );
       }
-      return m('div.members', Model.members.map(member => {
-        return m('div.alert.alert-secondary',
-          m('div.member', `${member.order}番目: ${member.name}`),
-          m('button.btn.btn-info', {
-            onclick() {
-              if (confirm(`${member.name}さんでいいですか`)) {
-                Model.select(member.id);
+      return m('div.members',
+        m('h1', 'ファシリテーターを決めましょう'),
+        Model.members.map(member => {
+          return m('div.alert.alert-secondary',
+            m('div.member', `${member.order}番目: ${member.name}`),
+            m('button.btn.btn-info', {
+              onclick() {
+                if (confirm(`${member.name}さんでいいですか`)) {
+                  Model.select(member.id);
+                }
               }
-            }
-          }, 'Select'),
-        );
-      }));
+            }, 'Select'),
+          );
+        })
+      );
     },
   };
   const OrdinaryComponent = {
