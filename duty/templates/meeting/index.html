@@ -24,6 +24,18 @@ Meeting
   .candidates > .alert {
     margin-bottom: 3px;
   }
+  .active-log {
+    margin-top: 20px;
+  }
+  .log-body {
+    max-height: 250px;
+    overflow-y: auto;
+    font-size: 10pt;
+    border: 1px solid #aab1e0;
+    padding: 10px;
+    background: #cfd4fd;
+    border-radius: 5px;
+  }
 </style>
 {% endblock %}
 
@@ -39,23 +51,28 @@ Meeting
 <script>
   const facilitatorEndpoint = "{% url 'meeting:api:facilitator' %}";
   const membersEndpoint = "{% url 'meeting:api:members' %}";
+  const activeLogsEndpoint = "{% url 'meeting:api:active-logs' %}";
 
   const state = {
     fetching: false,
     fetchingMembers: false,
     selecting: false,
     rotating: false,
+    fetchingActiveLogs: false,
     connecting() {
       return state.fetching ||
         state.fetchingMembers ||
         state.selecting ||
-        state.rotating;
+        state.rotating ||
+        state.fetchingActiveLogs
+      ;
     },
   };
 
   const Model = {
     facilitator: null,
     members: [],
+    activeLogs: [],
     fetch() {
       state.fetching = true;
       return m.request({url: facilitatorEndpoint, method: 'GET'})
@@ -100,12 +117,15 @@ Meeting
       const nextIndex = (idx + (direction === 1 ? direction : Model.members.length - 1)) % Model.members.length;
       return Model.members[nextIndex].id;
     },
-    rotate(next_facilitator_id) {
+    rotate(nextFacilitatorId, operationType) {
       state.rotating = true;
       return m.request({
         url: facilitatorEndpoint,
         method: 'PUT',
-        data: { member_id: next_facilitator_id },
+        data: {
+          member_id: nextFacilitatorId,
+          operation_type: operationType
+        },
       })
         .then(response => {
           state.rotating = false;
@@ -116,9 +136,18 @@ Meeting
           return e;
         });
     },
+    fetchActiveLogs() {
+      state.fetchingActiveLogs = true;
+      return m.request({url: activeLogsEndpoint, method: 'GET'})
+        .then(response => {
+          state.fetchingActiveLogs = false;
+          Model.activeLogs = response.data;
+        });
+    },
   };
   Model.fetch();
   Model.fetchMembers();
+  Model.fetchActiveLogs();
   const NoFacilitatorComponent = {
     view(vnode) {
       if (state.connecting()) return;
@@ -148,6 +177,8 @@ Meeting
       );
     },
   };
+  const DONE = 1;
+  const REDO = 2;
   const OrdinaryComponent = {
     view(vnode) {
       return m('div',
@@ -159,7 +190,7 @@ Meeting
               disabled: state.connecting(),
               onclick() {
                 if (confirm('次の人に回しますよ')) {
-                  Model.rotate(Model.nextId(1));
+                  Model.rotate(Model.nextId(1), DONE);
                 }
               },
             }, 'Done!'),
@@ -167,7 +198,7 @@ Meeting
               disabled: state.connecting(),
               onclick() {
                 if (confirm('操作を戻しますよ')) {
-                  Model.rotate(Model.nextId(-1));
+                  Model.rotate(Model.nextId(-1), REDO);
                 }
               },
             }, 'Redo'),
@@ -198,7 +229,21 @@ Meeting
           if (!Model.facilitator) {
             return m(NoFacilitatorComponent);
           }
-          return m(OrdinaryComponent);
+          return m('div',
+            m(OrdinaryComponent),
+            m('div.active-log',
+              m('div',
+                m('i.fa.fa-history[aria-hidden=true]'),
+                m('span', '操作履歴'),
+              ),
+              m('div.log-body', Model.activeLogs.map(x => {
+                return m('div',
+                  m('span', x.message),
+                  m('br'),
+                );
+              })),
+            ),
+          );
         })(),
       );
     }
