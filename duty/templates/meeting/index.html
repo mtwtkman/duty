@@ -130,6 +130,7 @@ Meeting
         .then(response => {
           state.rotating = false;
           Model.facilitator = response.facilitator;
+          Model.fetchActiveLogs();
         })
         .catch(e => {
           state.rotating = false;
