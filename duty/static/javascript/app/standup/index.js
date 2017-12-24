@@ -1,46 +1,34 @@
 import m from 'mithril';
 
-  const d = new Date();
-  const state = {
+import model from './model.js';
+
+const d = new Date();
+const state = {
     fetching: false,
     fetchingMembers: false,
     today: `${d.getFullYear()}/${d.getDate()}/${d.getMonth() + 1}`,
-  };
-  const endpoint = '/standup/api/';
-  const membersEndpoint = '/members/api/members';
-  const Model = {
-    members: [],
-    chairman: null,
     connecting() {
-      return state.fetching ||
-        state.fetchingMembers
-      ;
+        return state.fetching ||
+            state.fetchingMembers
+        ;
     },
-    fetch() {
-      state.fetching = true;
-      return m.request({url: endpoint, method: 'GET'})
-        .then(response => {
-          state.fetching = false;
-          Model.chairman = response.data;
-        });
-    },
-    fetchMembers() {
-      state.fetchingMessage = true;
-      return m.request({url: membersEndpoint, method: 'GET'})
-        .then(response => {
-        state.fetchingMessage = false;
-          Model.members = response.members;
-        });
-    },
-  };
-  Model.fetch();
-  Model.fetchMembers();
-  const Component = {
-    view(vnode) {
-      return m('div.wrapper',
-        m('div', `${state.today}の司会は`),
-      );
-    },
-  };
-  m.mount(document.getElementById('app'), Component);
+};
 
+const Component = {
+    oninit(vnode) {
+        state.fetching = true;
+        state.fetchingMembers = true;
+        model.fetch().then(() => {
+            state.fetching = false;
+        });
+        model.fetchMembers().then(() => {
+            state.fetchingMembers = false;
+        });
+    },
+    view(vnode) {
+        return m('div.wrapper',
+            m('div', `${state.today}の司会は`),
+        );
+    },
+};
+m.mount(document.getElementById('app'), Component);

@@ -1,7 +1,8 @@
 import m from 'mithril';
 
-const facilitatorEndpoint = '/meeting/api/meeting/facilitator';
-const membersEndpoint = '/meeting/api/meeting/members';
+const apiBase = '/meeting/api/meeting/';
+const facilitatorEndpoint = `${apiBase}facilitator`;
+const membersEndpoint = `${apiBase}members`;
 
 const model = {
     facilitator: null,
@@ -50,7 +51,7 @@ const model = {
                   member_id: nextFacilitatorId,
                 }
             });
-            model.facilitator = response.facilitator;
+            model.facilitator = response.data;
             return response;
         } catch(e) {
             throw e;

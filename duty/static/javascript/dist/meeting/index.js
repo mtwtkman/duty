@@ -3506,8 +3506,9 @@ var _mithril2 = _interopRequireDefault(_mithril);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var facilitatorEndpoint = '/meeting/api/meeting/facilitator';
-var membersEndpoint = '/meeting/api/meeting/members';
+var apiBase = '/meeting/api/meeting/';
+var facilitatorEndpoint = apiBase + "facilitator";
+var membersEndpoint = apiBase + "members";
 
 var model = {
   facilitator: null,
@@ -3652,7 +3653,7 @@ var model = {
             case 3:
               response = _context4.sent;
 
-              model.facilitator = response.facilitator;
+              model.facilitator = response.data;
               return _context4.abrupt("return", response);
 
             case 8:

@@ -27,7 +27,7 @@ class AsigneeViewAbstract(View):
         obj = self.model_class.objects.all()
         if obj.count() == 0:
             return JsonResponse(
-                {'message': '{} is must be elected'.format(self.model.__class__.__name__)},
+                {'message': '{} is must be elected'.format(self.model_class.__name__)},
                 status=400
             )
         return JsonResponse({'message': 'ok', 'data': obj[0].member.as_dict()})
@@ -39,8 +39,8 @@ class AsigneeViewAbstract(View):
         if not form.is_valid():
             return JsonResponse({'message': form.errors})
         member_id = form.cleaned_data['member_id']
-        selef.model_class.objects.all().delete()
-        selef.model_class.objects.create(member_id=member_id)
+        self.model_class.objects.all().delete()
+        self.model_class.objects.create(member_id=member_id)
         obj = self.order_model_class.objects.get(member_id=member_id)
         return JsonResponse({'message': 'ok', 'data': obj.as_dict()})
 
