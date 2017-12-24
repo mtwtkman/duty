@@ -3709,7 +3709,11 @@ var Component = {
     }, 'Add'))), (0, _mithril2.default)('div.members', _model2.default.data.map(function (x) {
       return (0, _mithril2.default)("div#" + x.id, (0, _mithril2.default)('div.name', (0, _mithril2.default)('span', x.name), function () {
         if (x.is_facilitator) {
-          return (0, _mithril2.default)('span.facilitator.badge.badge-warning', 'ファ');
+          return (0, _mithril2.default)('span.assignee-badge.badge.badge-warning', 'ファ');
+        }
+      }(), function () {
+        if (x.is_chairman) {
+          return (0, _mithril2.default)('span.assignee-badge.badge.badge-info', '朝会');
         }
       }()), (0, _mithril2.default)('div.delete', (0, _mithril2.default)('button.btn.btn-danger[type=button]', {
         onclick: function onclick() {

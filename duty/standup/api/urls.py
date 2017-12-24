@@ -5,6 +5,6 @@ from .views import Chairman, Members
 
 app_name = 'standup_api'
 urlpatterns = [
-    path('chairman', Chairman.as_view(), name='chairman'),
+    path('assignee', Chairman.as_view(), name='assignee'),
     path('members', Members.as_view(), name='members'),
 ]

@@ -31,6 +31,7 @@ class Members(View):
             }
 
         member.save_with_facilitate_order()
+        member.save_with_chairman_order()
         return JsonResponse(body, status=status)
 
 

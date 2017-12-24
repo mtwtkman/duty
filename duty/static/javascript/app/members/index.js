@@ -53,7 +53,12 @@ const Component = {
                     m('span', x.name),
                     (() => {
                         if (x.is_facilitator) {
-                            return m('span.facilitator.badge.badge-warning', 'ファ');
+                            return m('span.assignee-badge.badge.badge-warning', 'ファ');
+                        }
+                    })(),
+                    (() => {
+                        if (x.is_chairman) {
+                            return m('span.assignee-badge.badge.badge-info', '朝会');
                         }
                     })(),
                 ),

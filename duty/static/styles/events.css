@@ -1,0 +1,19 @@
+.members > div {
+  display: flex;
+}
+.member {
+  flex-grow: 1;
+  align-self: center;
+}
+.assignee {
+  text-align: center;
+}
+button:hover {
+  cursor: pointer;
+}
+.candidates {
+  margin-top: 10px;
+}
+.box {
+  margin-bottom: 3px;
+}

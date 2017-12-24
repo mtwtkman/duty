@@ -3485,7 +3485,219 @@ exports.default = function (fn) {
     });
   };
 };
-},{"../core-js/promise":6}],3:[function(require,module,exports) {
+},{"../core-js/promise":6}],79:[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _regenerator = require("babel-runtime/regenerator");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require("babel-runtime/helpers/asyncToGenerator");
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+exports.default = modelFactory;
+
+var _mithril = require("mithril");
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function modelFactory(apiBase) {
+  var endpoint = apiBase + "assignee";
+  var membersEndpoint = apiBase + "members";
+  var model = {
+    assignee: null,
+    members: [],
+    fetch: function () {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        var response;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return _mithril2.default.request({ url: endpoint, method: 'GET' });
+
+              case 3:
+                response = _context.sent;
+
+                model.assignee = response.data;
+                return _context.abrupt("return", response);
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](0);
+                throw _context.t0;
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 8]]);
+      }));
+
+      function fetch() {
+        return _ref.apply(this, arguments);
+      }
+
+      return fetch;
+    }(),
+    fetchMembers: function () {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+        var response;
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return _mithril2.default.request({ url: membersEndpoint, method: 'GET' });
+
+              case 3:
+                response = _context2.sent;
+
+                model.members = response.data;
+                return _context2.abrupt("return", response);
+
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2["catch"](0);
+                throw _context2.t0;
+
+              case 11:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[0, 8]]);
+      }));
+
+      function fetchMembers() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetchMembers;
+    }(),
+    select: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(member_id) {
+        var response;
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return _mithril2.default.request({ url: endpoint, method: 'POST', data: { member_id: member_id } });
+
+              case 3:
+                response = _context3.sent;
+
+                model.assignee = response.data;
+                return _context3.abrupt("return", response);
+
+              case 8:
+                _context3.prev = 8;
+                _context3.t0 = _context3["catch"](0);
+                throw _context3.t0;
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 8]]);
+      }));
+
+      function select(_x) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return select;
+    }(),
+    ids: function ids() {
+      return model.members.map(function (x) {
+        return x.id;
+      });
+    },
+    nextId: function nextId(direction) {
+      var idx = model.ids().findIndex(function (x) {
+        return x === model.assignee.id;
+      });
+      var nextIndex = (idx + (direction === 1 ? direction : model.members.length - 1)) % model.members.length;
+      return model.members[nextIndex].id;
+    },
+    rotate: function () {
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(nextId, operationType) {
+        var response;
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.prev = 0;
+                _context4.next = 3;
+                return _mithril2.default.request({
+                  url: endpoint,
+                  method: 'POST',
+                  data: {
+                    member_id: nextId
+                  }
+                });
+
+              case 3:
+                response = _context4.sent;
+
+                model.assignee = response.data;
+                return _context4.abrupt("return", response);
+
+              case 8:
+                _context4.prev = 8;
+                _context4.t0 = _context4["catch"](0);
+                throw _context4.t0;
+
+              case 11:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this, [[0, 8]]);
+      }));
+
+      function rotate(_x2, _x3) {
+        return _ref4.apply(this, arguments);
+      }
+
+      return rotate;
+    }()
+  };
+  return model;
+}
+},{"babel-runtime/regenerator":4,"babel-runtime/helpers/asyncToGenerator":5,"mithril":2}],3:[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mithril = require("mithril");
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+var _events = require("../common/models/events.js");
+
+var _events2 = _interopRequireDefault(_events);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _events2.default)('/standup/api/standup/');
+},{"mithril":2,"../common/models/events.js":79}],78:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3506,88 +3718,120 @@ var _mithril2 = _interopRequireDefault(_mithril);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var apiBase = '/standup/api/standup/';
-var endpoint = apiBase + "chairman";
-var membersEndpoint = apiBase + "members";
+var state = {
+  fetching: false,
+  fetchingMembers: false,
+  selecting: false,
+  rotating: false,
+  connecting: function connecting() {
+    return state.fetching || state.fetchingMembers || state.selecting || state.rotating;
+  }
+};
 
-var model = {
-  members: [],
-  chairman: null,
-  fetch: function () {
-    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-      var response;
+var NoAssigneeComponent = {
+  view: function view(vnode) {
+    if (state.connecting()) return;
+    if (vnode.attrs.model.members.length === 0) {
+      return (0, _mithril2.default)('div', (0, _mithril2.default)('h1', vnode.attrs.assigneeType + "\u3092\u6C7A\u3081\u307E\u3057\u3087\u3046"), (0, _mithril2.default)('span', 'おや、メンバーがまだ登録されてないみたいですね。'), (0, _mithril2.default)('br'), (0, _mithril2.default)('a[href=/members/]', 'ここ'), (0, _mithril2.default)('span', 'からメンバーの登録をしましょう'));
+    }
+    return (0, _mithril2.default)('div.members', (0, _mithril2.default)('h1', vnode.attrs.assigneeType + "\u3092\u6C7A\u3081\u307E\u3057\u3087\u3046"), vnode.attrs.model.members.map(function (member) {
+      return (0, _mithril2.default)('div.alert.alert-secondary', (0, _mithril2.default)('div.member', member.order + "\u756A\u76EE: " + member.name), (0, _mithril2.default)('button.btn.btn-info', {
+        onclick: function onclick() {
+          if (confirm(member.name + "\u3055\u3093\u3067\u3044\u3044\u3067\u3059\u304B")) {
+            state.selecting = true;
+            vnode.attrs.model.select(member.id).then(function () {
+              state.selecting = false;
+            });
+          }
+        }
+      }, 'Select'));
+    }));
+  }
+};
+var DONE = 1;
+var REDO = 2;
+var OrdinaryComponent = {
+  view: function view(vnode) {
+    return (0, _mithril2.default)('div', (0, _mithril2.default)('div.assignee', (0, _mithril2.default)('div', "\u4ECA\u65E5\u306E" + vnode.attrs.assigneeType + "\u306F"), (0, _mithril2.default)('h3', vnode.attrs.model.assignee.name + "\u3055\u3093"), (0, _mithril2.default)('div.btn-group[role=group]', (0, _mithril2.default)('button.btn.btn-info[type=button]', {
+      disabled: state.connecting(),
+      onclick: function onclick() {
+        if (confirm('次の人に回しますよ')) {
+          state.rotating = true;
+          vnode.attrs.model.rotate(vnode.attrs.model.nextId(1), DONE).then(function () {
+            state.rotating = false;
+          });
+        }
+      }
+    }, 'Done!'), (0, _mithril2.default)('button.btn.btn-warning[type=button]', {
+      disabled: state.connecting(),
+      onclick: function onclick() {
+        if (confirm('操作を戻しますよ')) {
+          state.rotating = true;
+          vnode.attrs.model.rotate(vnode.attrs.model.nextId(-1), REDO).then(function () {
+            state.rotating = false;
+          });
+        }
+      }
+    }, 'Redo'))), (0, _mithril2.default)('div.candidates', vnode.attrs.model.members.map(function (member) {
+      return (0, _mithril2.default)('div.box.alert.alert-secondary', (0, _mithril2.default)('div.member', function () {
+        if (member.id === vnode.attrs.model.assignee.id) {
+          return (0, _mithril2.default)('i.fa.fa-gavel[aria-hidden=true');
+        }
+      }(), (0, _mithril2.default)('span', member.order + "\u756A\u76EE: " + member.name)));
+    })));
+  }
+};
+var Component = {
+  oninit: function () {
+    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(vnode) {
       return _regenerator2.default.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return _mithril2.default.request({ url: endpoint, method: 'GET' });
+              state.fetching = true;
+              state.fetchingMembers = true;
+              try {
+                vnode.attrs.model.fetch();
+              } catch (e) {
+                console.log(e);
+              } finally {
+                state.fetching = false;
+              }
+              vnode.attrs.model.fetchMembers().then(function () {
+                state.fetchingMembers = false;
+              });
 
-            case 3:
-              response = _context.sent;
-
-              model.chairman = response.data;
-              return _context.abrupt("return", response);
-
-            case 8:
-              _context.prev = 8;
-              _context.t0 = _context["catch"](0);
-              throw _context.t0;
-
-            case 11:
+            case 4:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, this, [[0, 8]]);
+      }, _callee, this);
     }));
 
-    function fetch() {
+    function oninit(_x) {
       return _ref.apply(this, arguments);
     }
 
-    return fetch;
+    return oninit;
   }(),
-  fetchMembers: function () {
-    var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-      var response;
-      return _regenerator2.default.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.prev = 0;
-              _context2.next = 3;
-              return _mithril2.default.request({ url: membersEndpoint, method: 'GET' });
-
-            case 3:
-              response = _context2.sent;
-
-              model.members = response.members;
-              return _context2.abrupt("return", response);
-
-            case 8:
-              _context2.prev = 8;
-              _context2.t0 = _context2["catch"](0);
-              throw _context2.t0;
-
-            case 11:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2, this, [[0, 8]]);
-    }));
-
-    function fetchMembers() {
-      return _ref2.apply(this, arguments);
-    }
-
-    return fetchMembers;
-  }()
+  view: function view(vnode) {
+    return (0, _mithril2.default)('div', function () {
+      if (!vnode.attrs.model.assignee) {
+        return (0, _mithril2.default)(NoAssigneeComponent, {
+          model: vnode.attrs.model,
+          assigneeType: vnode.attrs.assigneeType
+        });
+      }
+      return (0, _mithril2.default)(OrdinaryComponent, {
+        model: vnode.attrs.model,
+        assigneeType: vnode.attrs.assigneeType
+      });
+    }());
+  }
 };
 
-exports.default = model;
+exports.default = Component;
 },{"babel-runtime/regenerator":4,"babel-runtime/helpers/asyncToGenerator":5,"mithril":2}],1:[function(require,module,exports) {
 "use strict";
 
@@ -3599,35 +3843,21 @@ var _model = require("./model.js");
 
 var _model2 = _interopRequireDefault(_model);
 
+var _events = require("../common/components/events");
+
+var _events2 = _interopRequireDefault(_events);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var d = new Date();
-var state = {
-  fetching: false,
-  fetchingMembers: false,
-  today: d.getFullYear() + "/" + d.getDate() + "/" + (d.getMonth() + 1),
-  connecting: function connecting() {
-    return state.fetching || state.fetchingMembers;
-  }
-};
-
-var Component = {
-  oninit: function oninit(vnode) {
-    state.fetching = true;
-    state.fetchingMembers = true;
-    _model2.default.fetch().then(function () {
-      state.fetching = false;
-    });
-    _model2.default.fetchMembers().then(function () {
-      state.fetchingMembers = false;
-    });
-  },
+_mithril2.default.mount(document.getElementById('app'), {
   view: function view(vnode) {
-    return (0, _mithril2.default)('div.wrapper', (0, _mithril2.default)('div', state.today + "\u306E\u53F8\u4F1A\u306F"));
+    return (0, _mithril2.default)(_events2.default, {
+      model: _model2.default,
+      assigneeType: '司会'
+    });
   }
-};
-_mithril2.default.mount(document.getElementById('app'), Component);
-},{"mithril":2,"./model.js":3}],0:[function(require,module,exports) {
+});
+},{"mithril":2,"./model.js":3,"../common/components/events":78}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
 function Module() {
