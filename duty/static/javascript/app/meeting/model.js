@@ -1,5 +1,4 @@
 import m from 'mithril';
-import state from './state.js';
 
 const facilitatorEndpoint = '/meeting/api/meeting/facilitator';
 const membersEndpoint = '/meeting/api/meeting/members';
@@ -8,36 +7,30 @@ const model = {
     facilitator: null,
     members: [],
     async fetch() {
-        state.fetching = true;
         try {
             const response = await m.request({url: facilitatorEndpoint, method: 'GET'});
             model.facilitator = response.data;
+            return response;
         } catch(e) {
-            return e;
-        } finally {
-            state.fetching = false;
+            throw  e;
         }
     },
     async fetchMembers() {
-        state.fetchingMembers = true;
         try {
             const response = await m.request({url: membersEndpoint, method: 'GET'});
             model.members = response.members;
+            return response;
         } catch(e) {
-            return e;
-        } finally {
-            state.fetchingMembers = false;
+            throw e;
         }
     },
     async select(member_id) {
-        state.selecting = true;
         try {
             const response = await m.request({url: facilitatorEndpoint, method: 'POST', data: { member_id }})
             model.facilitator = response.facilitator;
+            return response;
         } catch(e) {
-            return e;
-        } finally {
-            state.selecting = false;
+            throw e;
         }
     },
     ids() {
@@ -49,7 +42,6 @@ const model = {
         return model.members[nextIndex].id;
     },
     async rotate(nextFacilitatorId, operationType) {
-        state.rotating = true;
         try {
             const response = await m.request({
                 url: facilitatorEndpoint,
@@ -59,10 +51,9 @@ const model = {
                 }
             });
             model.facilitator = response.facilitator;
+            return response;
         } catch(e) {
-            return e;
-        } finally {
-            state.rotating = false;
+            throw e;
         }
     },
 };

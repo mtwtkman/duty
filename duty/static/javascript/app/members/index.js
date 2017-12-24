@@ -2,12 +2,11 @@ import m from 'mithril';
 
 import model from './model.js';
 
-model.fetch();
 
 const Component = {
     connecting: false,
     errorMessage: '',
-    oninit(vnode) {
+    async oninit(vnode) {
         vnode.send = () => {
             vnode.state.connecting = true;
             try {
@@ -19,6 +18,11 @@ const Component = {
                 model.value = '';
             }
         };
+        vnode.state.connecting = true;
+        model.fetch().then(() => {
+            vnode.state.connecting = false;
+        });
+
     },
     view(vnode) {
         const state = vnode.state;

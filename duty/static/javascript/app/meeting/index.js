@@ -4,9 +4,6 @@ import model from './model.js';
 import state from './state.js';
 
 
-model.fetch();
-model.fetchMembers();
-
 const NoFacilitatorComponent = {
     view(vnode) {
         if (state.connecting()) return;
@@ -27,7 +24,10 @@ const NoFacilitatorComponent = {
                     m('button.btn.btn-info', {
                         onclick() {
                             if (confirm(`${member.name}さんでいいですか`)) {
-                                model.select(member.id);
+                                state.selecting = true;
+                                model.select(member.id).then(() => {
+                                    state.selecting = false;
+                                });
                             }
                         }
                     }, 'Select'),
@@ -49,7 +49,10 @@ const OrdinaryComponent = {
                         disabled: state.connecting(),
                         onclick() {
                             if (confirm('次の人に回しますよ')) {
-                                model.rotate(model.nextId(1), DONE);
+                                state.rotating = true;
+                                model.rotate(model.nextId(1), DONE).then(() => {
+                                    state.rotating = false;
+                                });
                             }
                         },
                     }, 'Done!'),
@@ -57,7 +60,10 @@ const OrdinaryComponent = {
                         disabled: state.connecting(),
                         onclick() {
                             if (confirm('操作を戻しますよ')) {
-                                model.rotate(model.nextId(-1), REDO);
+                                state.rotating = true;
+                                model.rotate(model.nextId(-1), REDO).then(() => {
+                                    state.rotating = false;
+                                });
                             }
                         },
                     }, 'Redo'),
@@ -79,8 +85,15 @@ const OrdinaryComponent = {
     },
 };
 const Component = {
-    oninit(vnode) {
-        vnode.state.model = model;
+    async oninit(vnode) {
+        state.fetching = true;
+        state.fetchingMembers = true;
+        model.fetch().then(() => {
+            state.fetching = false;
+        });
+        model.fetchMembers().then(() => {
+            state.fetchingMembers = false;
+        });
     },
     view(vnode) {
         return m('div',
