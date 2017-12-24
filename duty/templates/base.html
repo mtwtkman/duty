@@ -38,6 +38,13 @@
               Meeting
             </a>
           </li>
+          {% active_link 'standup' as standup_active %}
+          <li class="nav-item {{ standup_active }}">
+            <a class="nav-link" href="{% url 'standup:index' %}">
+              <i class="fa fa-sun-o" aria-hidden="true"></i>
+              Standup
+            </a>
+          </li>
         </ul>
       </div>
     </nav>

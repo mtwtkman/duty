@@ -1,29 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Members
 {% endblock %}
 
 {% block extra_style %}
-<style>
-  .members > div:hover {
-    background: #f3f3f3;
-  }
-  .members > div {
-    display: flex;
-    margin: 3px 0;
-  }
-  .members > div > div.name {
-    flex-grow: 1;
-    align-self: center;
-  }
-  .members > div > div.delete > button:hover {
-    cursor: pointer;
-  }
-  .members > div > div.delete > button {
-    padding: 3px 6px;
-  }
-</style>
+<link rel="stylesheet" href="{% static 'styles/members.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -35,106 +18,5 @@ Members
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  const endpoint = "{% url 'members:api-members' %}"
-  const Model = {
-    data: [],
-    fetch() {
-      m.request({url: endpoint, method: 'GET'})
-        .then(response => {
-          Model.data = response.members;
-        });
-    },
-    create(data) {
-      return m.request({
-        url: endpoint,
-        method: 'POST',
-        data,
-      });
-    },
-    delete(id) {
-      return m.request({url: `${endpoint}/${id}`, method: 'DELETE'});
-    },
-    remove(id) {
-      Model.data = Model.data.filter(x => x.id !== id);
-    },
-  };
-
-  const state = {
-    value: '',
-    connecting: false,
-    errorMessage: '',
-    model: Model,
-    updateValue(v) {
-      state.value = v;
-    },
-  }
-
-  const Component = {
-    oninit(vnode) {
-      Model.fetch();
-      vnode.state = Object.assign(state, vnode.state);
-      vnode.send = () => {
-        state.connecting = true;
-        Model.create({name: state.value})
-          .then(resp => {
-            state.connecting = false;
-            state.value = '';
-            Model.data.push(resp.created);
-          }).catch(e => {
-            state.connecting = false;
-            state.errorMessage = e.message;
-          });
-      };
-    },
-    view(vnode) {
-      return m('div',
-        (() => {
-          if (!!state.errorMessage) {
-            return m('div.alert.alert-danger[role=alert]', state.errorMessage);
-          }
-        })(),
-        m('div.input-group',
-          m('input.form-control', {
-            oninput: m.withAttr('value', state.updateValue),
-            placeholder: 'input name',
-            'aria-label': 'input name',
-            value: state.value,
-            maxlength: '20',
-            disabled: state.connecting,
-          }),
-          m('span.input-group-btn',
-            m('button.btn.btn-primary[type=button]', {
-              onclick: vnode.send,
-              disabled: !state.value || state.connecting,
-            }, 'Add'),
-          ),
-        ),
-        m('div.members', Model.data.map(x => m(`div#${x.id}`,
-            m('div.name', x.name),
-            m('div.delete',
-              m('button.btn.btn-danger[type=button]', {
-                onclick() {
-                  if (confirm('Are you sure?')) {
-                    state.connecting = true;
-                    Model.delete(x.id)
-                      .then(response => {
-                        state.connecting = false;
-                        Model.remove(response.deleted);
-                      })
-                      .catch(e => {
-                        state.connecting = false;
-                        state.errorMessage = e.message;
-                      });
-                  }
-                },
-              }, m('i.fa.fa-trash-o[aria-hidden=true]')),
-            ),
-          )
-        )),
-      );
-    }
-  };
-  m.mount(document.getElementById('app'), Component);
-</script>
+<script src="{% static 'javascript/dist/members/index.js' %}"></script>
 {% endblock %}

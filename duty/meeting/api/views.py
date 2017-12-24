@@ -23,11 +23,7 @@ class Facilitator(View):
         form = FacilitatorForm(data)
         if not form.is_valid():
             return JsonResponse({'message': form.errors})
-        meeting.Facilitator.objects.all().delete()
-        member_id = form.cleaned_data['member_id']
-        meeting.Facilitator.objects.create(member_id=member_id)
-        facilitator = meeting.FacilitatorOrder.objects.get(member_id=member_id)
-        meeting.FacilitatorAssignedLog.objects.create(member_id=member_id, operation_type=1)
+        facilitator = self.update(form.cleaned_data['member_id'])
         return JsonResponse({'message': 'ok', 'facilitator': facilitator.as_dict()})
 
     @transaction.atomic
@@ -36,12 +32,13 @@ class Facilitator(View):
         form = FacilitatorForm(data)
         if not form.is_valid():
             return JsonResponse({'message': form.errors})
-        meeting.Facilitator.objects.all().delete()
-        member_id = form.cleaned_data['member_id']
-        meeting.Facilitator.objects.create(member_id=member_id)
-        facilitator = meeting.FacilitatorOrder.objects.get(member_id=member_id)
-        meeting.FacilitatorAssignedLog.objects.create(member_id=member_id, operation_type=data['operation_type'])
+        facilitator = self.update(form.cleaned_data['member_id'])
         return JsonResponse({'message': 'ok', 'facilitator': facilitator.as_dict()})
+
+    def update(self, member_id):
+        meeting.Facilitator.objects.all().delete()
+        meeting.Facilitator.objects.create(member_id=member_id)
+        return meeting.FacilitatorOrder.objects.get(member_id=member_id)
 
 
 class Members(View):
@@ -50,11 +47,3 @@ class Members(View):
     def get(self, request):
         members = meeting.FacilitatorOrder.objects.all().order_by('order')
         return JsonResponse({'message': 'ok', 'members': [x.as_dict() for x in members]})
-
-
-class ActiveLogs(View):
-    http_method_names = ['get']
-
-    def get(self, request):
-        active_logs = meeting.FacilitatorAssignedLog.objects.all().order_by('-updated_at')
-        return JsonResponse({'message': 'ok', 'data': [x.messagify() for x in active_logs]})

@@ -12,7 +12,7 @@ class Members(View):
     http_method_names = ['get', 'post']
 
     def get(self, request):
-        members = model.Member.objects.all()
+        members = model.Member.roles.all()
         return JsonResponse({'members': [x.as_dict() for x in members]})
 
     @transaction.atomic

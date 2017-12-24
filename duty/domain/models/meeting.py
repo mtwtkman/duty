@@ -26,25 +26,3 @@ class Facilitator(models.Model):
 
     class Meta:
         db_table = 'facilitator'
-
-
-class FacilitatorAssignedLog(models.Model):
-    OPERATION_TYPES = (
-        (1, 'done'),
-        (2, 'redo'),
-    )
-
-    member = models.ForeignKey(foreign_key, on_delete=models.CASCADE)
-    operation_type = models.IntegerField(choices=OPERATION_TYPES)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def messagify(self):
-        return {
-            'message': '{} {}'.format(
-                self.updated_at.astimezone(tz=timezone('Asia/Tokyo')).strftime('%Y/%m/%d %H:%M:%S'),
-                {1: '{}さんが完了'.format(self.member.name), 2: 'やり直し'}[self.operation_type]
-            )
-        }
-
-    class Meta:
-        db_table = 'facilitator_assigned_logs'

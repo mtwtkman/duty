@@ -1,0 +1,24 @@
+.members > div:hover {
+  background: #f3f3f3;
+}
+.members > div {
+  display: flex;
+  margin: 3px 0;
+  height: 30px;
+}
+.members > div > div.name {
+  flex-grow: 1;
+  align-self: center;
+}
+.members > div > div.delete {
+  align-self: center;
+}
+.members > div > div.delete > button:hover {
+  cursor: pointer;
+}
+.members > div > div.delete > button {
+  padding: 3px 6px;
+}
+.facilitator {
+  display: inline;
+}

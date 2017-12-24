@@ -1,0 +1,23 @@
+{
+  "name": "duty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch:meeting": "parcel app/meeting/index.js -d dist/meeting",
+    "watch:members": "parcel app/members/index.js -d dist/members",
+    "watch": "npm-run-all --parallel watch:meeting watch:members",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "mithril": "^1.1.6",
+    "npm-run-all": "^4.1.2",
+    "parcel-bundler": "^1.3.1",
+    "postcss-modules": "^1.1.0"
+  }
+}
