@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Standup
 {% endblock %}
 
 {% block extra_style %}
-<style>
-  .wrapper > div {
-    text-align: center;
-  }
-</style>
+<link rel="stylesheet" href="{% static 'styles/standup.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -21,49 +18,5 @@ Standup
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  const d = new Date();
-  const state = {
-    fetching: false,
-    fetchingMembers: false,
-    today: `${d.getFullYear()}/${d.getDate()}/${d.getMonth() + 1}`,
-  };
-  const endpoint = "{% url 'standup:api' %}";
-  const membersEndpoint = "{% url 'members:api-members' %}";
-  const Model = {
-    members: [],
-    chairman: null,
-    connecting() {
-      return state.fetching ||
-        state.fetchingMembers
-      ;
-    },
-    fetch() {
-      state.fetching = true;
-      return m.request({url: endpoint, method: 'GET'})
-        .then(response => {
-          state.fetching = false;
-          Model.chairman = response.data;
-        });
-    },
-    fetchMembers() {
-      state.fetchingMessage = true;
-      return m.request({url: membersEndpoint, method: 'GET'})
-        .then(response => {
-        state.fetchingMessage = false;
-          Model.members = response.members;
-        });
-    },
-  };
-  Model.fetch();
-  Model.fetchMembers();
-  const Component = {
-    view(vnode) {
-      return m('div.wrapper',
-        m('div', `${state.today}の司会は`),
-      );
-    },
-  };
-  m.mount(document.getElementById('app'), Component);
-</script>
+<script src="{% static 'javascript/dist/standup/index.js' %}"></script>
 {% endblock %}

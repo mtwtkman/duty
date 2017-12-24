@@ -6,7 +6,8 @@
   "scripts": {
     "watch:meeting": "parcel app/meeting/index.js -d dist/meeting",
     "watch:members": "parcel app/members/index.js -d dist/members",
-    "watch": "npm-run-all --parallel watch:meeting watch:members",
+    "watch:standup": "parcel app/standup/index.js -d dist/standup",
+    "watch": "npm-run-all --parallel watch:meeting watch:members watch:standup",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
