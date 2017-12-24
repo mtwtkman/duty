@@ -3781,9 +3781,13 @@ var Component = {
             case 0:
               _state2.default.fetching = true;
               _state2.default.fetchingMembers = true;
-              _model2.default.fetch().then(function () {
+              try {
+                _model2.default.fetch();
+              } catch (e) {
+                console.log(e);
+              } finally {
                 _state2.default.fetching = false;
-              });
+              }
               _model2.default.fetchMembers().then(function () {
                 _state2.default.fetchingMembers = false;
               });

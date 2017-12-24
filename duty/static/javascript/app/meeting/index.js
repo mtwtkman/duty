@@ -88,9 +88,13 @@ const Component = {
     async oninit(vnode) {
         state.fetching = true;
         state.fetchingMembers = true;
-        model.fetch().then(() => {
+        try {
+            model.fetch()
+        } catch(e) {
+            console.log(e);
+        } finally {
             state.fetching = false;
-        });
+        }
         model.fetchMembers().then(() => {
             state.fetchingMembers = false;
         });
