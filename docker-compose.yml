@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./src:/app
+      - site-packages:/usr/local/lib/python3.6/site-packages
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  assets:
+    build:
+      context: .
+      dockerfile: Dockerfile.assets
+    command: npm run watch
+    volumes:
+      - ./src/static/javascript/app:/app/javascript/app
+      - ./src/static/javascript/dist:/app/javascript/dist
+      - ./src/static/javascript/package.json:/app/javascript/package.json
+      - ./src/static/javascript/package-lock.json:/app/javascript/package-lock.json
+      - node_modules:/app/javascript/node_modules
+
+  db:
+    image: postgres:alpine
+volumes:
+  site-packages:
+  node_modules:

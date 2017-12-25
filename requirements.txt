@@ -1,2 +1,3 @@
 django
 django-bulk-update
+psycopg2

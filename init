@@ -1,6 +1,0 @@
-#! /bin/sh
-
-pyvenv v
-v/bin/pip install -r requirements.txt
-v/bin/python duty/manage.py migrate domain
-v/bin/python duty/manage.py runserver 0.0.0.0:8000
