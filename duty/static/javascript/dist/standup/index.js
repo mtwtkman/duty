@@ -3762,7 +3762,7 @@ exports.default = {
       return (0, _mithril2.default)('div', (0, _mithril2.default)('h1', vnode.attrs.assigneeType + "\u3092\u6C7A\u3081\u307E\u3057\u3087\u3046"), (0, _mithril2.default)('span', 'おや、メンバーがまだ登録されてないみたいですね。'), (0, _mithril2.default)('br'), (0, _mithril2.default)('a[href=/members/]', 'ここ'), (0, _mithril2.default)('span', 'からメンバーの登録をしましょう'));
     }
     return (0, _mithril2.default)('div.members', (0, _mithril2.default)('h1', vnode.attrs.assigneeType + "\u3092\u6C7A\u3081\u307E\u3057\u3087\u3046"), vnode.attrs.model.members.map(function (member) {
-      return (0, _mithril2.default)('div.alert.alert-secondary', (0, _mithril2.default)('div.member', member.order + "\u756A\u76EE: " + member.name), (0, _mithril2.default)('button.btn.btn-info', {
+      return (0, _mithril2.default)('div.alert.alert-secondary', (0, _mithril2.default)('div.member', member.name), (0, _mithril2.default)('button.btn.btn-info', {
         onclick: function onclick() {
           if (confirm(member.name + "\u3055\u3093\u3067\u3044\u3044\u3067\u3059\u304B")) {
             state.selecting = true;

@@ -17,7 +17,7 @@ export default {
             m('h1', `${vnode.attrs.assigneeType}を決めましょう`),
             vnode.attrs.model.members.map(member => {
                 return m('div.alert.alert-secondary',
-                    m('div.member', `${member.order}番目: ${member.name}`),
+                    m('div.member', member.name),
                     m('button.btn.btn-info', {
                         onclick() {
                             if (confirm(`${member.name}さんでいいですか`)) {
