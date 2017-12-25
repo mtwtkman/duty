@@ -16,4 +16,5 @@ button:hover {
 }
 .box {
   margin-bottom: 3px;
+  cursor: move;
 }

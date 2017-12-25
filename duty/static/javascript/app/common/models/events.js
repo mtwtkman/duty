@@ -56,6 +56,20 @@ export default function modelFactory(apiBase) {
                 throw e;
             }
         },
+        reorder() {
+            model.members = model.members.sort((a, b) => a.order > b.order ? 1 : -1);
+        },
+        async update() {
+            try {
+                const response = await m.request({
+                    url: endpoint,
+                    method: 'PUT',
+                    data: model.members,
+                });
+            } catch(e) {
+                throw e;
+            }
+        },
     };
     return model;
 }

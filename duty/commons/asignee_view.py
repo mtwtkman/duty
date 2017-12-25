@@ -4,6 +4,7 @@ from django.views.generic import View
 from django import forms
 from django.http import JsonResponse
 from django.db import transaction
+from django_bulk_update.helper import bulk_update
 
 from domain.models import members
 
@@ -21,7 +22,7 @@ class AsigneeForm(forms.Form):
 
 
 class AsigneeViewAbstract(View):
-    http_method_names = ['get', 'post']
+    http_method_names = ['get', 'post', 'put']
 
     def get(self, request):
         obj = self.model_class.objects.all()
@@ -43,6 +44,19 @@ class AsigneeViewAbstract(View):
         self.model_class.objects.create(member_id=member_id)
         obj = self.order_model_class.objects.get(member_id=member_id)
         return JsonResponse({'message': 'ok', 'data': obj.as_dict()})
+
+    @transaction.atomic
+    def put(self, request):
+        data = {
+            x['id']: x['order']
+            for x in json.loads(request.body)
+        }
+        L = []
+        for x in self.order_model_class.objects.all():
+            x.order = data[x.pk]
+            L.append(x)
+        bulk_update(L, update_fields=['order'])
+        return JsonResponse({'message': 'ok'});
 
 
 class MembersViewAbstract(View):
