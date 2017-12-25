@@ -21,4 +21,5 @@
 }
 .assignee-badge {
   display: inline;
+  margin: 0 4px;
 }

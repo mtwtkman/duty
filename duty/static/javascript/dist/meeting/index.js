@@ -3807,9 +3807,11 @@ var CandidateComponent = {
       ondragend: dragend
     }, (0, _mithril2.default)('div.member', function () {
       if (isAssigned) {
-        return (0, _mithril2.default)('i.fa.fa-gavel[aria-hidden=true');
+        return (0, _mithril2.default)('i.fa.fa-gavel[aria-hidden=true]', {
+          style: { 'padding-right': '10px' }
+        });
       }
-    }(), (0, _mithril2.default)('span', member.order + ": " + member.name)));
+    }(), (0, _mithril2.default)('span', member.name)));
   }
 };
 

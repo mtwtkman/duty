@@ -17,10 +17,12 @@ const CandidateComponent = {
             m('div.member',
                 (() => {
                     if (isAssigned) {
-                        return m('i.fa.fa-gavel[aria-hidden=true');
+                        return m('i.fa.fa-gavel[aria-hidden=true]', {
+                            style: { 'padding-right': '10px' }
+                        });
                     }
                 })(),
-                m('span', `${member.order}: ${member.name}`),
+                m('span', member.name),
             ),
         );
     },
