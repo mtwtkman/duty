@@ -45,6 +45,24 @@
               Standup
             </a>
           </li>
+          {% active_link 'planning' as planning_active %}
+          <li class="nav-item dropdown {{ planning_active }}">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Planning
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'planning:poker' %}">Poker</a>
+              <a class="dropdown-item" href="#">Time Allocation(WIP)</a>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>

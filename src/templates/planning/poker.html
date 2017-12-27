@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Poker
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col self-align-center">
+    <div id="app"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'javascript/dist/poker/index.js' %}"></script>
+{% endblock %}

@@ -11,7 +11,7 @@ l="${d} logs -f"
 case $1 in
   up)      ${d} up -d;;
   worker)  ${w} runworker -v 2;;
-  migrate) ${w} migrate domain;;
+  migrate) ${w} migrate $2;;
   pip)     ${de} web pip install $2;;
   app)     ${w} startapp $2;;
   sh)      ${w} shell;;
