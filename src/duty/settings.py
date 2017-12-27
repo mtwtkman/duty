@@ -10,12 +10,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'channels',
     'commons.apps.CommonsConfig',
     'members.apps.MembersConfig',
     'meeting.apps.MeetingConfig',
     'domain.apps.DomainConfig',
     'standup.apps.StandupConfig',
     'home.apps.HomeConfig',
+    'planning.apps.PlanningConfig',
 ]
 
 MIDDLEWARE = [
@@ -59,3 +61,13 @@ USE_TZ = True
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_URL = '/static/'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('redis', 6379)],
+        },
+        'ROUTING': 'duty.routing.channel_routing',
+    }
+}

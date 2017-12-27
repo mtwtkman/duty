@@ -1,3 +1,5 @@
 django
 django-bulk-update
 psycopg2
+channels
+asgi_redis

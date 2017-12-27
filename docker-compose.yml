@@ -12,6 +12,7 @@ services:
       - 8000:8000
     depends_on:
       - db
+      - redis
   assets:
     build:
       context: .
@@ -26,6 +27,8 @@ services:
 
   db:
     image: postgres:alpine
+  redis:
+    image: redis:alpine
 volumes:
   site-packages:
   node_modules:
