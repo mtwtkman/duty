@@ -19,12 +19,11 @@ services:
       dockerfile: Dockerfile.assets
     command: npm run watch
     volumes:
-      - ./src/static/javascript/app:/app/javascript/app
-      - ./src/static/javascript/dist:/app/javascript/dist
-      - ./src/static/javascript/package.json:/app/javascript/package.json
-      - ./src/static/javascript/package-lock.json:/app/javascript/package-lock.json
-      - node_modules:/app/javascript/node_modules
-
+      - ./src/static/javascript/src:/app/src
+      - ./src/static/javascript/dist:/app/dist
+      - ./src/static/javascript/package.json:/app/package.json
+      - ./src/static/javascript/package-lock.json:/app/package-lock.json
+      - node_modules:/app/node_modules
   db:
     image: postgres:alpine
   redis:
