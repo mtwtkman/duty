@@ -68,7 +68,7 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({8:[function(require,module,exports) {
+})({7:[function(require,module,exports) {
 var global = (1,eval)("this");
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -798,7 +798,7 @@ var global = (1,eval)("this");
   (function() { return this })() || Function("return this")()
 );
 
-},{}],7:[function(require,module,exports) {
+},{}],5:[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -835,10 +835,10 @@ if (hadRuntime) {
   }
 }
 
-},{"./runtime":8}],4:[function(require,module,exports) {
+},{"./runtime":7}],4:[function(require,module,exports) {
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":7}],10:[function(require,module,exports) {
+},{"regenerator-runtime":5}],10:[function(require,module,exports) {
 
 },{}],42:[function(require,module,exports) {
 // 7.1.4 ToInteger
@@ -2185,9 +2185,9 @@ require('../modules/es7.promise.finally');
 require('../modules/es7.promise.try');
 module.exports = require('../modules/_core').Promise;
 
-},{"../modules/es6.object.to-string":10,"../modules/es6.string.iterator":11,"../modules/web.dom.iterable":12,"../modules/es6.promise":13,"../modules/es7.promise.finally":14,"../modules/es7.promise.try":15,"../modules/_core":16}],6:[function(require,module,exports) {
+},{"../modules/es6.object.to-string":10,"../modules/es6.string.iterator":11,"../modules/web.dom.iterable":12,"../modules/es6.promise":13,"../modules/es7.promise.finally":14,"../modules/es7.promise.try":15,"../modules/_core":16}],8:[function(require,module,exports) {
 module.exports = { "default": require("core-js/library/fn/promise"), __esModule: true };
-},{"core-js/library/fn/promise":9}],5:[function(require,module,exports) {
+},{"core-js/library/fn/promise":9}],6:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -2226,7 +2226,7 @@ exports.default = function (fn) {
     });
   };
 };
-},{"../core-js/promise":6}],3:[function(require,module,exports) {
+},{"../core-js/promise":8}],3:[function(require,module,exports) {
 var global = (1,eval)("this");
 ;(function() {
 "use strict"
@@ -3630,7 +3630,7 @@ var model = {
 };
 
 exports.default = model;
-},{"babel-runtime/regenerator":4,"babel-runtime/helpers/asyncToGenerator":5,"mithril":3}],1:[function(require,module,exports) {
+},{"babel-runtime/regenerator":4,"babel-runtime/helpers/asyncToGenerator":6,"mithril":3}],1:[function(require,module,exports) {
 "use strict";
 
 var _regenerator = require("babel-runtime/regenerator");
@@ -3733,7 +3733,7 @@ var Component = {
   }
 };
 _mithril2.default.mount(document.getElementById('app'), Component);
-},{"babel-runtime/regenerator":4,"babel-runtime/helpers/asyncToGenerator":5,"mithril":3,"./model.js":2}],0:[function(require,module,exports) {
+},{"babel-runtime/regenerator":4,"babel-runtime/helpers/asyncToGenerator":6,"mithril":3,"./model.js":2}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
 function Module() {
@@ -3751,7 +3751,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent && typeof WebSocket !== 'undefined') {
-  var ws = new WebSocket('ws://localhost:36029/');
+  var ws = new WebSocket('ws://localhost:34989/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 

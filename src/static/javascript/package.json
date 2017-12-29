@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch:meeting": "parcel src/meeting/index.js -d dist/meeting",
-    "watch:members": "parcel src/members/index.js -d dist/members",
-    "watch:standup": "parcel src/standup/index.js -d dist/standup",
+    "watch:meeting": "parcel watch src/meeting/index.js -d dist/meeting",
+    "watch:members": "parcel watch src/members/index.js -d dist/members",
+    "watch:standup": "parcel watch src/standup/index.js -d dist/standup",
     "watch:poker": "parcel src/poker/index.js -d dist/poker",
     "watch": "npm-run-all --parallel watch:meeting watch:members watch:standup watch:poker",
     "build:meeting": "parcel build src/meeting/index.js -d dist/meeting",
